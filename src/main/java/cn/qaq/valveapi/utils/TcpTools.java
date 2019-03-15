@@ -82,6 +82,7 @@ public class TcpTools {
         for (int i = 0; i < packets.length; i++) {
             if (packets[i] != null) {
                 response = response.concat(new String(packets[i].array(), 12, packets[i].position()-14));
+                logger.debug(response);
             }
         }
         return response;
