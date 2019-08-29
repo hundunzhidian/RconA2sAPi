@@ -43,12 +43,13 @@ java -Dfile.encoding=utf-8 -jar valveapi-0.0.1-SNAPSHOT.jar --server.port=9090
 "name": "XXXXXXXXX",
 "map": "c5m1_waterfront",
 "players": "0/14",
-"time": "21ms"
+"time": "21ms",
+"visibility": "public"
 },
 "jsonArray": [ ]
 }
   ```
-  - - - A2s_info命令为获取服务器当前信息，返回值为嵌套json数据，name为服务器名称，map为当前地图，players为当前人数/Max人数，time为访问延迟
+  - - - A2s_info命令为获取服务器当前信息，返回值为嵌套json数据，name为服务器名称，map为当前地图，players为当前人数/Max人数，time为访问延迟,visibility代表服务器是否需要密码进入(private或者public)
   - - A2s_players：
   - - - 请求url为 http://localhost:9090/players, post JSON数据为:`{"ip":"服务器ip地址:服务器端口号"}`
   - - - 返回JSON数据为:

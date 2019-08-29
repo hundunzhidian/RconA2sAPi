@@ -25,7 +25,7 @@ public class TcpTools {
     public void initTcp(String ip) throws IOException {
         String[] ips=ip.split(":");
         socket=new Socket();
-        socket.connect(new InetSocketAddress(ips[0], Integer.parseInt(ips[1])), 1000);
+        socket.connect(new InetSocketAddress(ips[0], Integer.parseInt(ips[1])), 6000);
         socket.setSoTimeout(RESPONSE_TIMEOUT);
     }
     public void closeTcp(){
