@@ -203,4 +203,66 @@ public class UdpServer {
         return jsonObject;
     }
 
+    public static final String udpRcon(String ip,String password,String cmd)throws Exception
+    {
+        JSONArray jsonArray=new JSONArray();
+        UdpTools udpTools = null;
+        try {
+            String[] ips = ip.split(":");
+            udpTools = new UdpTools();
+            byte[] data = udpTools.SendData(ips[0], Integer.parseInt(ips[1]), UdpTools.hexStrToBinaryStr(UdpTools.RCON_CHALLENGE));//先取回握手包
+            Integer i = 0;
+            for (; i < data.length; i++) {
+                if (data[i] == (byte) 0x20) break;
+            }
+            i++;
+            for (; i < data.length; i++) {
+                if (data[i] == (byte) 0x20) break;
+            }
+            i++;
+            //跳过两个 0x20
+            byte[] challenge = new byte[20];
+            for (Integer j = 0; i < data.length; j++, i++) {
+                if (data[i] == (byte) 0x0a) break;
+                challenge[j] = data[i];
+            }
+            //数据包由 RCON_HEADER xx "password" cmd0x00
+            byte[] cmds = new byte[UdpTools.byteToString(challenge).getBytes().length +
+                    8 + 2 + 2 +
+                    password.getBytes("UTF-8").length +
+                    cmd.getBytes("UTF-8").length + 1 + 2];
+            i = 0;
+            for (Integer j = 0; i < UdpTools.RCON_HEADER.length; i++, j++) {
+                cmds[i] = UdpTools.RCON_HEADER[j];
+            }
+            cmds[i++] = (byte) 0x20;
+            //下面放置challenge
+            for (Integer j = 0; i < challenge.length; i++, j++) {
+                cmds[i] = challenge[j];
+            }
+            cmds[--i] = (byte) 0x20;// 空格
+            cmds[++i] = (byte) 0x22;// "
+            i++;
+            for (Integer j = 0; j < password.getBytes("UTF-8").length; i++, j++) {
+                cmds[i] = password.getBytes("UTF-8")[j];
+            }
+            cmds[i++] = (byte) 0x22;// "
+            cmds[i++] = (byte) 0x20;// 空格
+            for (Integer j = 0; j < cmd.getBytes("UTF-8").length; i++, j++) {
+                cmds[i] = cmd.getBytes("UTF-8")[j];
+            }
+            cmds[i] = (byte) 0x00;
+            byte[] response = udpTools.SendData(ips[0], Integer.parseInt(ips[1]), cmds);//发送命令
+            for (i = 0; i < response.length; i++)
+            {
+                if(response[i]==(byte)0x6C) break;
+            }
+            return UdpTools.byteToString(response,i+1);
+        } catch (SocketTimeoutException e) {
+            throw  e;
+        }finally {
+            udpTools.closeUdp();
+        }
+    }
+
 }

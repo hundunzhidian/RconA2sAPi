@@ -32,6 +32,8 @@ public class UdpTools {
     private static final Logger logger = Logger.getLogger(UdpTools.class);
     public static final String A2S_PLAYER="FF FF FF FF 55 FF FF FF FF";
     public static final String A2S_INFO="FF FF FF FF 54 53 6F 75 72 63 65 20 45 6E 67 69 6E 65 20 51 75 65 72 79 00";
+    public static final String RCON_CHALLENGE="FF FF FF FF 63 68 61 6C 6C 65 6E 67 65 20 72 63 6F 6E";
+    public static final byte[] RCON_HEADER=UdpTools.hexStrToBinaryStr("FF FF FF FF 72 63 6F 6E");
     private DatagramSocket datagramSocket;
     private  long time;
 
@@ -49,6 +51,22 @@ public class UdpTools {
             return new String(src, 0, length, "UTF-8");
         } catch (Exception e) {
             logger.error(e.toString());
+            return "";
+        }
+    }
+    public static final String byteToString(byte[] src,Integer offset)
+    {
+        try {
+            int length = 0;
+            for (int i = 0; i < src.length; ++i) {
+                if (src[i+offset] == 0) {
+                    length = i;
+                    break;
+                }
+            }
+            return new String(src, offset, length, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
             return "";
         }
     }

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>cn.qaq</groupId>
 	<artifactId>valveapi</artifactId>
-	<version>1.0.1.RELEASE</version>
+	<version>1.0.2.RELEASE</version>
 	<name>valveapi</name>
 	<description>api for valve A2s and Rcon Protocol</description>
 
