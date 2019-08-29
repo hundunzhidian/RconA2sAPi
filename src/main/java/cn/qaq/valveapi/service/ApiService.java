@@ -44,8 +44,12 @@ public class ApiService {
         Json json=new Json();
         TcpTools tools =new TcpTools();
         try {
-            tools.initTcp(ip);
-            json.setMsg(tools.send(cmd,passwd));
+            if(tools.initTcp(ip))
+                json.setMsg(tools.send(cmd,passwd));
+            else
+            {
+                json.setMsg(UdpServer.udpRcon(ip,passwd,cmd));
+            }
             json.setSuccess(true);
         } catch (Exception e) {
             // TODO: handle exception

@@ -22,11 +22,18 @@ public class TcpTools {
     final static int RESPONSE_TIMEOUT = 2000;
     final static int MULTIPLE_PACKETS_TIMEOUT = 300;
 
-    public void initTcp(String ip) throws IOException {
+    public boolean initTcp(String ip) {
         String[] ips=ip.split(":");
-        socket=new Socket();
-        socket.connect(new InetSocketAddress(ips[0], Integer.parseInt(ips[1])), 6000);
-        socket.setSoTimeout(RESPONSE_TIMEOUT);
+        try {
+            socket=new Socket();
+            socket.connect(new InetSocketAddress(ips[0], Integer.parseInt(ips[1])), 6000);
+            socket.setSoTimeout(RESPONSE_TIMEOUT);
+            return true;
+        } catch (Exception e) {
+            // TODO: handle exception
+            logger.warn("侦测到无法建立TCP链接，改用UDP协议重试中......");
+        }
+        return false;
     }
     public void closeTcp(){
         try {
