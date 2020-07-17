@@ -51,7 +51,7 @@ public class UdpServer {
                     longi=longi|((long)data[i]<<8*j);
                     // logger.debug((long)data[i]);
                 }
-                jsonObject.put("socre",longi);//存入分数
+                jsonObject.put("score",longi);//存入分数
                 byte[] t=new byte[4];
                 for(int j=0;j<4;j++,i++)
                 {
