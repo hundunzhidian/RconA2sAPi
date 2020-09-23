@@ -1,6 +1,8 @@
 # ValveApi
 
 基于Valve的[Rcon](https://developer.valvesoftware.com/wiki/Source_RCON_Protocol)、[A2s_player](https://developer.valvesoftware.com/wiki/Server_queries#A2S_PLAYER)、[A2s_Info](https://developer.valvesoftware.com/wiki/Server_queries#A2S_INFO)的查询接口
+## 协议扩展
+- [基于MiraiBot协议的qq机器人](https://github.com/hundunzhidian/valvemiraibot/)，可以使用qq进行服务器管理操作
 
 ## 项目简介
 - 基于Spring boot创建，使用UDP、TCP进行服务器数据传输，并对返回数据进行编码
