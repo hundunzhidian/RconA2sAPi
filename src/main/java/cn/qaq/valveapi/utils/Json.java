@@ -1,52 +1,36 @@
 package cn.qaq.valveapi.utils;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@Getter
+@Setter
+@Slf4j
+@NoArgsConstructor
 public class Json {
-    private boolean success = false;
-    private String msg_title="";
-    private String msg = "";
-    private JSONObject jsonObject=new JSONObject();
-    private JSONArray jsonArray=new JSONArray();
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
+    public Json(boolean success, String msg) {
         this.success = success;
-    }
-
-    public String getMsg_title() {
-        return msg_title;
-    }
-
-    public void setMsg_title(String msg_title) {
-        this.msg_title = msg_title;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
         this.msg = msg;
     }
 
-    public JSONObject getJsonObject() {
-        return jsonObject;
+    public Json(boolean success, JSONArray jsonArray) {
+        this.success = success;
+        this.jsonArray = jsonArray;
     }
 
-    public void setJsonObject(JSONObject jsonObject) {
+    public Json(boolean success, JSONObject jsonObject) {
+        this.success = success;
         this.jsonObject = jsonObject;
     }
 
-    public JSONArray getJsonArray() {
-        return jsonArray;
-    }
-
-    public void setJsonArray(JSONArray jsonArray) {
-        this.jsonArray = jsonArray;
-    }
+    private boolean success = false;
+    private String msg_title = "";
+    private String msg = "";
+    private JSONObject jsonObject = new JSONObject();
+    private JSONArray jsonArray = new JSONArray();
 }
