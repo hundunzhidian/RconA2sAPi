@@ -10,7 +10,7 @@
 
 
 ## 使用方法
-- 项目基于JDK1.8,请下载JDK1.8及以上版本运行，运行命令:
+- 项目基于JDK15,请下载JDK15及以上版本运行，运行命令:
 ```shell
 java -jar valveapi-0.0.1-SNAPSHOT.jar --server.port=9090
 ```
