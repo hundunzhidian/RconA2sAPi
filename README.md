@@ -30,10 +30,8 @@ java -Dfile.encoding=utf-8 -jar valveapi-0.0.1-SNAPSHOT.jar --server.port=9090
 ```json
                 {
                 "success": true,
-                "msg_title": "",
-                "msg": "Console: 啊啊啊\n",
-                "jsonObject": { },
-                "jsonArray": [ ]
+                "data": "Console: 啊啊啊\n",
+                "msg":""
                 }
  ```
  - - - success代表执行正常，msg为rcon执行返回数据
@@ -44,16 +42,14 @@ java -Dfile.encoding=utf-8 -jar valveapi-0.0.1-SNAPSHOT.jar --server.port=9090
  ```json
 {
 "success": true,
-"msg_title": "",
 "msg": "",
-"jsonObject": {
+"data": {
 "name": "XXXXXXXXX",
 "map": "c5m1_waterfront",
 "players": "0/14",
 "time": "21ms",
 "visibility": "public"
-},
-"jsonArray": [ ]
+}
 }
   ```
   - - - A2s_info命令为获取服务器当前信息，返回值为嵌套json数据，name为服务器名称，map为当前地图，players为当前人数/Max人数，time为访问延迟,visibility代表服务器是否需要密码进入(private或者public)
@@ -63,10 +59,8 @@ java -Dfile.encoding=utf-8 -jar valveapi-0.0.1-SNAPSHOT.jar --server.port=9090
   ```json
                   {
                   "success": true,
-                  "msg_title": "",
                   "msg": "",
-                  "jsonObject": { },
-                  "jsonArray": [
+                  "data": [
                                {
                                "index": 0,
                                "name": "XXXX",
