@@ -1,21 +1,21 @@
 package cn.qaq.valveapi.utils;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
-
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+@Slf4j
 public class UdpServer {
-    private static final Logger logger = Logger.getLogger(UdpServer.class);
 
     /**
      * @return 返回服务器的玩家名称(map)、分数score、时间time、索引index
      * @param ip 服务器IP:服务器端口
      * */
-    public static final JSONArray getPlayers(String ip) throws IOException {
-        JSONArray jsonArray=new JSONArray();
+    public static final List<HashMap<String,Object>> getPlayers(String ip) throws IOException {
+        List<HashMap<String,Object>> list=new ArrayList<>();
         UdpTools udpTools = null;
         try {
             String[] ips=ip.split(":");
@@ -31,9 +31,9 @@ public class UdpServer {
             int i=6;//从第7位开始, FF FF FF FF 44 05,第6位是玩家总数
             for(int players=0;players<data[5];players++)
             {
-                JSONObject jsonObject=new JSONObject();
+                HashMap<String,Object> hashMap=new HashMap<>();
                 byte[] str=new byte[100];
-                jsonObject.put("index",data[i++]);//存入index
+                hashMap.put("index",data[i++]);//存入index
                 //获取玩家姓名
                 for(int j=0;i<data.length;i++,j++)
                 {
@@ -43,7 +43,7 @@ public class UdpServer {
                         break;
                     }
                 }
-                jsonObject.put("name",UdpTools.byteToString(str));//存入玩家姓名
+                hashMap.put("name",UdpTools.byteToString(str));//存入玩家姓名
                 //说明:32位应用程序long占4个字节，16进制为0xff ff
                 long longi=0;
                 for(int j=0;j<4;j++,i++)
@@ -51,26 +51,26 @@ public class UdpServer {
                     longi=longi|((long)data[i]<<8*j);
                     // logger.debug((long)data[i]);
                 }
-                jsonObject.put("socre",longi);//存入分数
+                hashMap.put("socre",longi);//存入分数
                 byte[] t=new byte[4];
                 for(int j=0;j<4;j++,i++)
                 {
                     t[j]=data[i];
                 }
-                jsonObject.put("time", String.valueOf(UdpTools.getFloat(t)*1));
-                jsonArray.add(jsonObject);
+                hashMap.put("time", String.valueOf(UdpTools.getFloat(t)*1));
+                list.add(hashMap);
             }
         } catch (SocketTimeoutException e) {
             throw  e;
         }finally {
             udpTools.closeUdp();
         }
-        return jsonArray;
+        return list;
     }
     /**
      * 新引擎
      * */
-    public static final void sourceServer(byte[] resBytes,JSONObject src) throws Exception
+    public static final void sourceServer(byte[] resBytes,HashMap<String,Object> src) throws Exception
     {
             byte[] tmp=new byte[100];
             int j=6;//初始化从第6个字符开始
@@ -115,7 +115,7 @@ public class UdpServer {
     /**
      * 老引擎
      * */
-    public static final void oldSourceServer(byte[] resBytes,JSONObject src)
+    public static final void oldSourceServer(byte[] resBytes,HashMap<String,Object> src)
     {
         /**
          * Source老引擎：
@@ -176,36 +176,34 @@ public class UdpServer {
      * @return 返回服务器信息 名称name 地图map 玩家数players 延迟time
      * @param ip 服务器IP:服务器端口
      * */
-    public static final JSONObject getServers(String ip)
+    public static final HashMap<String,Object> getServers(String ip)
     {
-
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("name","");
-        jsonObject.put("map","");
-        jsonObject.put("players","0/0");
-        jsonObject.put("time","0ms");
-        jsonObject.put("visibility","public");
+        HashMap<String,Object> hashMap=new HashMap<>();
+        hashMap.put("name","");
+        hashMap.put("map","");
+        hashMap.put("players","0/0");
+        hashMap.put("time","0ms");
+        hashMap.put("visibility","public");
         UdpTools udpTools = null;
         try {
             String[] ips=ip.split(":");
             udpTools=new UdpTools();
             byte[] resBytes=udpTools.SendData(ips[0],Integer.parseInt(ips[1]),UdpTools.hexStrToBinaryStr(UdpTools.A2S_INFO));
-            if(resBytes[4]==(byte) 0x6d) oldSourceServer(resBytes,jsonObject);
-                else  sourceServer(resBytes,jsonObject);
-            jsonObject.put("time",(int)udpTools.getTime()+"ms");
+            if(resBytes[4]==(byte) 0x6d) oldSourceServer(resBytes,hashMap);
+                else  sourceServer(resBytes,hashMap);
+            hashMap.put("time",(int)udpTools.getTime()+"ms");
         } catch (SocketTimeoutException e) {
-            jsonObject.put("map", "访问超时");
+            hashMap.put("map", "访问超时");
         } catch (Exception e){
-            jsonObject.put("map",e.getLocalizedMessage());
+            hashMap.put("map",e.getLocalizedMessage());
         }finally {
             udpTools.closeUdp();
         }
-        return jsonObject;
+        return hashMap;
     }
 
     public static final String udpRcon(String ip,String password,String cmd)throws Exception
     {
-        JSONArray jsonArray=new JSONArray();
         UdpTools udpTools = null;
         try {
             String[] ips = ip.split(":");
