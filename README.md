@@ -2,6 +2,12 @@
 
 基于Valve的[Rcon](https://developer.valvesoftware.com/wiki/Source_RCON_Protocol)、[A2s_player](https://developer.valvesoftware.com/wiki/Server_queries#A2S_PLAYER)、[A2s_Info](https://developer.valvesoftware.com/wiki/Server_queries#A2S_INFO)的查询接口
 
+# 1.1.0.RELEASE升级内容
+- 移除原先的json-lib库，使用Springboot自带的jackson代替
+- 移除原先的 spring-boot-starter-log4j 日志库，加入lombok,使用注解的方式输出日志
+- 优化返回字段，现在所有成功请求结果都会输出在同一个字段
+- 优化原先的异常处理机制，使用 ControllerAdvice ExceptionHandler进行全局异常处理
+
 ## 项目简介
 - 基于Spring boot创建，使用UDP、TCP进行服务器数据传输，并对返回数据进行编码
 - Rcon库协议基于[rconed](http://rconed.sf.net/)发展而来，修复了大部分错误，以及修复了对中文不兼容的问题
