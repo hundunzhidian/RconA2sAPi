@@ -64,13 +64,13 @@ java -Dfile.encoding=utf-8 -jar valveapi-0.0.1-SNAPSHOT.jar --server.port=9090
                                {
                                "index": 0,
                                "name": "XXXX",
-                               "socre": 0,
+                               "score": 0,
                                "time": "45875.816"
                                },
                                {
                                "index": 0,
                                "name": "XXXXXX",
-                               "socre": 9,
+                               "score": 9,
                                "time": "44703.492"
                                }
                   ]}
