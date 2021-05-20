@@ -1,7 +1,7 @@
 package cn.qaq.valveapi.utils;
 
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -9,9 +9,8 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SocketChannel;
-
+@Slf4j
 public class TcpTools {
-    private static final Logger logger = Logger.getLogger(TcpTools.class);
     private Socket socket ;
 
     public final static int SERVERDATA_EXECCOMMAND = 2;
@@ -31,7 +30,7 @@ public class TcpTools {
             return true;
         } catch (Exception e) {
             // TODO: handle exception
-            logger.warn("侦测到无法建立TCP链接，改用UDP协议重试中......");
+            log.warn("侦测到无法建立TCP链接，改用UDP协议重试中......");
         }
         return false;
     }
@@ -41,7 +40,7 @@ public class TcpTools {
             {socket.getOutputStream().close(); socket.getInputStream().close(); socket.close();}
         } catch (Exception e) {
             // TODO: handle exception
-            logger.debug(e.getMessage());
+            log.debug(e.getMessage());
         }
     }
 
@@ -53,7 +52,7 @@ public class TcpTools {
      * */
     public String send(String command,String password) throws Exception {
         String response = "";
-        //logger.debug("cmd:"+command+"\npasswd:"+password);
+        //log.debug("cmd:"+command+"\npasswd:"+password);
         try {
             if (rcon_auth(password)) {
                 // We are now authed
@@ -62,19 +61,19 @@ public class TcpTools {
                 if (resp != null) {
                     response = assemblePackets(resp);
                     if (response.length() == 0) {
-                        throw new HuangException("返回值为空!!!");
+                        throw new Exception("返回值为空!!!");
                     }
                 }
             }
             else {
-                throw new HuangException("Rcon Passwd Error");
+                throw new Exception("Rcon Passwd Error");
             }
         } catch (SocketTimeoutException timeout) {
             throw timeout;
         } catch (UnknownHostException e) {
-            throw  new HuangException("未知的主机名");
+            throw  new Exception("未知的主机名");
         } catch (IOException e) {
-            throw  new HuangException("Couldn't get I/O for the connection: ");
+            throw  new Exception("Couldn't get I/O for the connection: ");
         }catch (Exception e) {
             // TODO: handle exception
             throw e;
@@ -89,7 +88,7 @@ public class TcpTools {
         for (int i = 0; i < packets.length; i++) {
             if (packets[i] != null) {
                 response = response.concat(new String(packets[i].array(), 12, packets[i].position()-14));
-                logger.debug(response);
+                log.debug(response);
             }
         }
         return response;

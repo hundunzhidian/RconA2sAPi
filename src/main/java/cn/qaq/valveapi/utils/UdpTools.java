@@ -1,7 +1,6 @@
 package cn.qaq.valveapi.utils;
 
-import org.apache.log4j.Logger;
-
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.*;
 
@@ -28,8 +27,8 @@ import java.net.*;
  * 修改人：<br>
  * 修改内容：<br>       
  */
+@Slf4j
 public class UdpTools {
-    private static final Logger logger = Logger.getLogger(UdpTools.class);
     public static final String A2S_PLAYER="FF FF FF FF 55 FF FF FF FF";
     public static final String A2S_INFO="FF FF FF FF 54 53 6F 75 72 63 65 20 45 6E 67 69 6E 65 20 51 75 65 72 79 00";
     public static final String RCON_CHALLENGE="FF FF FF FF 63 68 61 6C 6C 65 6E 67 65 20 72 63 6F 6E";
@@ -50,7 +49,7 @@ public class UdpTools {
             }
             return new String(src, 0, length, "UTF-8");
         } catch (Exception e) {
-            logger.error(e.toString());
+            log.error(e.toString());
             return "";
         }
     }
@@ -117,17 +116,17 @@ public class UdpTools {
     public UdpTools() throws SocketException {
 
         datagramSocket=new DatagramSocket();
-        logger.debug("已初始化UDP");
+        log.debug("已初始化UDP");
     }
     public UdpTools(int localport) throws SocketException {
 
         datagramSocket=new DatagramSocket(localport);
-        logger.debug("已初始化UDP");
+        log.debug("已初始化UDP");
     }
     public UdpTools(String localIp,int localPort) throws SocketException, UnknownHostException {
 
         datagramSocket=new DatagramSocket(localPort, InetAddress.getByName(localIp));
-        logger.debug("已初始化UDP");
+        log.debug("已初始化UDP");
     }
     public byte[] SendData(String ip,int port,byte[] data) throws IOException {
         InetAddress address = InetAddress.getByName(ip);
@@ -153,7 +152,7 @@ public class UdpTools {
             // TODO: handle exception
             e.printStackTrace();
         }
-        logger.debug("已成功关闭UDP");
+        log.debug("已成功关闭UDP");
     }
 
     public long getTime() {
