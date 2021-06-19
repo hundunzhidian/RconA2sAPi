@@ -20,7 +20,7 @@ public class UdpServer {
         try {
             String[] ips=ip.split(":");
             udpTools=new UdpTools();
-            byte[] data=udpTools.SendData(ips[0],Integer.parseInt(ips[1]),UdpTools.hexStrToBinaryStr(UdpTools.A2S_PLAYER));//先取回握手包
+            byte[] data=udpTools.SendData(ips[0],Integer.parseInt(ips[1]),ByteTools.hexStrToBinaryStr(UdpTools.A2S_PLAYER));//先取回握手包
             data[4]=0x55;
             byte[] tmp=new byte[9];
             for(int i=0;i<9;i++)
@@ -57,7 +57,7 @@ public class UdpServer {
                 {
                     t[j]=data[i];
                 }
-                hashMap.put("time", String.valueOf(UdpTools.getFloat(t)*1));
+                hashMap.put("time", String.valueOf(ByteTools.getFloat(t)*1));
                 list.add(hashMap);
             }
         } catch (SocketTimeoutException e) {
@@ -188,8 +188,15 @@ public class UdpServer {
         try {
             String[] ips=ip.split(":");
             udpTools=new UdpTools();
-            byte[] resBytes=udpTools.SendData(ips[0],Integer.parseInt(ips[1]),UdpTools.hexStrToBinaryStr(UdpTools.A2S_INFO));
-            if(resBytes[4]==(byte) 0x6d) oldSourceServer(resBytes,hashMap);
+            byte[] a2s_info=ByteTools.hexStrToBinaryStr(UdpTools.A2S_INFO);
+            byte[] resBytes=udpTools.SendData(ips[0],Integer.parseInt(ips[1]),a2s_info);
+            if(resBytes[4]==(byte) 0x41)
+            {
+                byte[] newPacket=new byte[a2s_info.length+4];
+                ByteTools.arraycopy(a2s_info,0,newPacket,0,a2s_info.length);
+                ByteTools.arraycopy(resBytes,5,newPacket,a2s_info.length,4);
+                sourceServer(udpTools.SendData(ips[0],Integer.parseInt(ips[1]),newPacket),hashMap);
+            }else if(resBytes[4]==(byte) 0x6d) oldSourceServer(resBytes,hashMap);
                 else  sourceServer(resBytes,hashMap);
             hashMap.put("time",(int)udpTools.getTime()+"ms");
         } catch (SocketTimeoutException e) {
@@ -208,7 +215,7 @@ public class UdpServer {
         try {
             String[] ips = ip.split(":");
             udpTools = new UdpTools();
-            byte[] data = udpTools.SendData(ips[0], Integer.parseInt(ips[1]), UdpTools.hexStrToBinaryStr(UdpTools.RCON_CHALLENGE));//先取回握手包
+            byte[] data = udpTools.SendData(ips[0], Integer.parseInt(ips[1]), ByteTools.hexStrToBinaryStr(UdpTools.RCON_CHALLENGE));//先取回握手包
             Integer i = 0;
             for (; i < data.length; i++) {
                 if (data[i] == (byte) 0x20) break;

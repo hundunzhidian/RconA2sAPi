@@ -32,7 +32,7 @@ public class UdpTools {
     public static final String A2S_PLAYER="FF FF FF FF 55 FF FF FF FF";
     public static final String A2S_INFO="FF FF FF FF 54 53 6F 75 72 63 65 20 45 6E 67 69 6E 65 20 51 75 65 72 79 00";
     public static final String RCON_CHALLENGE="FF FF FF FF 63 68 61 6C 6C 65 6E 67 65 20 72 63 6F 6E";
-    public static final byte[] RCON_HEADER=UdpTools.hexStrToBinaryStr("FF FF FF FF 72 63 6F 6E");
+    public static final byte[] RCON_HEADER=ByteTools.hexStrToBinaryStr("FF FF FF FF 72 63 6F 6E");
     private DatagramSocket datagramSocket;
     private  long time;
 
@@ -69,49 +69,10 @@ public class UdpTools {
             return "";
         }
     }
-    public static final float getFloat(byte[] b) {
-        int accum = 0;
-        accum = accum|(b[0] & 0xff) << 0;
-        accum = accum|(b[1] & 0xff) << 8;
-        accum = accum|(b[2] & 0xff) << 16;
-        accum = accum|(b[3] & 0xff) << 24;
-        return Float.intBitsToFloat(accum);
-    }
-    public static final byte[] hexStrToBinaryStr(String hexString) {
-        if(hexString==null) return null;
-        String[] tmp = hexString.split(" ");
-        byte[] tmpBytes = new byte[tmp.length];
-        int i = 0;
-        for (String b : tmp) {
-            if (b.equals("FF")) {
-                tmpBytes[i++] = -1;
-            } else {
-                tmpBytes[i++] = Integer.valueOf(b, 16).byteValue();
-            }
-        }
-        return tmpBytes;
-    }
     public static  final String intToByteString(int src)
     {
         char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5','6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         return String.valueOf(HEX_CHAR[(src<0?src+256:src)/16])+String.valueOf(HEX_CHAR[(src<0?src+256:src)/16]);
-    }
-    public static final String binaryToString(byte[] data){
-        try {
-            char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5','6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-            StringBuffer stringBuffer=new StringBuffer();
-            for(int i=0;i<data.length;i++)
-            {
-                stringBuffer.append(HEX_CHAR[(data[i]<0?data[i]+256:data[i])/16]);
-                stringBuffer.append(HEX_CHAR[(data[i]<0?data[i]+256:data[i])%16]);
-                stringBuffer.append(" ");
-            }
-            return stringBuffer.toString();
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return null;
     }
     public UdpTools() throws SocketException {
 
