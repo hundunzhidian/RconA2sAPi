@@ -21,6 +21,7 @@ public class a2sInfoTest {
     public void t1()
     {
         ObjectMapper objectMapper=new ObjectMapper();
-        log.debug("服务器数据:{}",objectMapper.writeValueAsString(UdpServer.getServers("?????????")));
+
+        log.debug("服务器数据:{}",objectMapper.writeValueAsString( UdpServer.getPlayers("43.249.193.202:27040")));
     }
 }

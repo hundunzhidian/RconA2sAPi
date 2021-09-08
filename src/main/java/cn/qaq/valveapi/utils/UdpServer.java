@@ -48,7 +48,7 @@ public class UdpServer {
                 long longi=0;
                 for(int j=0;j<4;j++,i++)
                 {
-                    longi=longi|((long)data[i]<<8*j);
+                    longi|=((data[i]&0xffL)<<(8*i));
                     // logger.debug((long)data[i]);
                 }
                 hashMap.put("score",longi);//存入分数
