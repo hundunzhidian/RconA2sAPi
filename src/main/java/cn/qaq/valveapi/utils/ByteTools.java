@@ -87,7 +87,7 @@ public class ByteTools {
         Long a=0L;
         for(int i=0;i<length;i++)
         {
-            a|=((arr[i+index]&0xffL)<<(8*(length-1)-8*i));
+            a|=((arr[i+index]&0x000000ffL)<<(8*(length-1)-8*i));
         }
         return a;
     }
