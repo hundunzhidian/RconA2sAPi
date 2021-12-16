@@ -17,6 +17,7 @@
 	<properties>
 		<springboot.version>2.3.7.RELEASE</springboot.version>
 		<java.version>1.8</java.version>
+		<skipTests>true</skipTests>
 	</properties>
 
 	<dependencies>
