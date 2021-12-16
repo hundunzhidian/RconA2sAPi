@@ -45,12 +45,8 @@ public class UdpServer {
                 }
                 hashMap.put("name",UdpTools.byteToString(str));//存入玩家姓名
                 //说明:32位应用程序long占4个字节，16进制为0xff ff
-                long longi=0;
-                for(int j=0;j<4;j++,i++)
-                {
-                    longi|=((data[i]&0xffL)<<(8*i));
-                    // logger.debug((long)data[i]);
-                }
+                long longi=ByteTools.getLongBig(data,i,4);
+                i+=4;
                 hashMap.put("score",longi);//存入分数
                 byte[] t=new byte[4];
                 for(int j=0;j<4;j++,i++)

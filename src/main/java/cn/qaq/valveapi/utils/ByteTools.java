@@ -75,7 +75,15 @@ public class ByteTools {
                 (0x0000ff00 & (arr[index + 2] << 8)) |
                 (0x000000ff & arr[index + 3]);
     }
-    public static Long getLong(Byte[] arr, int index,int length) {
+    public static Long getLong(byte[] arr, int index,int length) {
+        Long a=0L;
+        for(int i=0;i<length;i++)
+        {
+            a|=((arr[i+index]&0xffL)<<(8*(length-1)-8*i));
+        }
+        return a;
+    }
+    public static Long getLongBig(byte[] arr, int index,int length) {
         Long a=0L;
         for(int i=0;i<length;i++)
         {
