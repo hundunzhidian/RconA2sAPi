@@ -51,7 +51,7 @@ public class ApiController {
     {
         if(map.containsKey("ip"))
         {
-            return ResponseBean.SUCCESS(service.getServers(map.get("ip")));
+            return ResponseBean.SUCCESS(service.getServersV2(map.get("ip")));
         }else{
             return ResponseBean.ERROR("参数缺失");
         }

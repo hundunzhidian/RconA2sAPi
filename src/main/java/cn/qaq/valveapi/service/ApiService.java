@@ -1,6 +1,7 @@
 package cn.qaq.valveapi.service;
 
 
+import cn.qaq.valveapi.a2s.ServerInfo;
 import cn.qaq.valveapi.utils.TcpTools;
 import cn.qaq.valveapi.utils.UdpServer;
 import lombok.SneakyThrows;
@@ -22,6 +23,10 @@ public class ApiService {
     public HashMap<String, Object> getServers(String ip)
     {
         return UdpServer.getServers(ip);
+    }
+    public ServerInfo getServersV2(String ip)
+    {
+        return UdpServer.getServersV2(ip);
     }
     @SneakyThrows
     public String execRcon(String ip, String cmd, String passwd)

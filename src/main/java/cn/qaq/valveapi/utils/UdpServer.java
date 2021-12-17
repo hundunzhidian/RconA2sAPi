@@ -1,5 +1,9 @@
 package cn.qaq.valveapi.utils;
 
+import cn.qaq.valveapi.Exception.QaQServiceException;
+import cn.qaq.valveapi.a2s.A2sInfo;
+import cn.qaq.valveapi.a2s.ServerInfo;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.*;
@@ -203,6 +207,33 @@ public class UdpServer {
             udpTools.closeUdp();
         }
         return hashMap;
+    }
+    /**
+     * @return 返回服务器信息 名称name 地图map 玩家数players 延迟time
+     * @param ip 服务器IP:服务器端口
+     * */
+    @SneakyThrows
+    public static final ServerInfo getServersV2(String ip)
+    {
+        UdpTools udpTools = null;
+        try {
+            String[] ips=ip.split(":");
+            udpTools=new UdpTools();
+            byte[] a2s_info=ByteTools.hexStrToBinaryStr(UdpTools.A2S_INFO);
+            byte[] resBytes=udpTools.SendData(ips[0],Integer.parseInt(ips[1]),a2s_info);
+            if(resBytes[4]==(byte) 0x41)
+            {
+                byte[] newPacket=new byte[a2s_info.length+4];
+                ByteTools.arraycopy(a2s_info,0,newPacket,0,a2s_info.length);
+                ByteTools.arraycopy(resBytes,5,newPacket,a2s_info.length,4);
+                return A2sInfo.parseFrom(udpTools.SendData(ips[0],Integer.parseInt(ips[1]),newPacket));
+            }else if(resBytes[4]!=(byte) 0x6d) return A2sInfo.parseFrom(resBytes);
+            else throw new QaQServiceException("仅查询起源服务器协议数据");
+        } catch (Exception e){
+            throw e;
+        }finally {
+            udpTools.closeUdp();
+        }
     }
 
     public static final String udpRcon(String ip,String password,String cmd)throws Exception
