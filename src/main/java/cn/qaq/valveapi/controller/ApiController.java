@@ -46,4 +46,14 @@ public class ApiController {
             return ResponseBean.ERROR("参数缺失");
         }
     }
+    @PostMapping("/v2/servers")
+    public ResponseBean getServersV2(@RequestBody Map<String, String> map)
+    {
+        if(map.containsKey("ip"))
+        {
+            return ResponseBean.SUCCESS(service.getServers(map.get("ip")));
+        }else{
+            return ResponseBean.ERROR("参数缺失");
+        }
+    }
 }
