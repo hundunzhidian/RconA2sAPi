@@ -15,7 +15,7 @@
 	<description>api for valve A2s and Rcon Protocol</description>
 
 	<properties>
-		<springboot.version>2.3.7.RELEASE</springboot.version>
+		<springboot.version>2.5.12</springboot.version>
 		<java.version>1.8</java.version>
 		<skipTests>true</skipTests>
 	</properties>
