@@ -226,7 +226,9 @@ public class UdpServer {
                 byte[] newPacket=new byte[a2s_info.length+4];
                 ByteTools.arraycopy(a2s_info,0,newPacket,0,a2s_info.length);
                 ByteTools.arraycopy(resBytes,5,newPacket,a2s_info.length,4);
-                return A2sInfo.parseFrom(udpTools.SendData(ips[0],Integer.parseInt(ips[1]),newPacket));
+                ServerInfo resInfo = A2sInfo.parseFrom(udpTools.SendData(ips[0], Integer.parseInt(ips[1]), newPacket));
+                resInfo.setTime(udpTools.getTime());
+                return resInfo;
             }else if(resBytes[4]!=(byte) 0x6d) return A2sInfo.parseFrom(resBytes);
             else throw new QaQServiceException("仅查询起源服务器协议数据");
         } catch (Exception e){
