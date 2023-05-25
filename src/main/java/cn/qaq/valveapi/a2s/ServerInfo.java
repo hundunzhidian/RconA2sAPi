@@ -33,6 +33,7 @@ public class ServerInfo
     SourceTv edfSourceTV;//sourcetv信息
     String edfTags;//tags信息
     Integer edfAppid;//appid信息
+    Long time;//延迟
     byte[] finalByte= ByteTools.hexStrToBinaryStr("00 00 00 00 00 00");
 
 }
