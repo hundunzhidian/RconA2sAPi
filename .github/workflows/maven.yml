@@ -26,7 +26,7 @@ jobs:
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           upload_url: ${{ github.event.repository.releases_url }}/latest/releases
           asset_path: ./target/valveapi-1.1.0.RELEASE.jar  # 请根据实际情况修改生成的 jar 文件路径
