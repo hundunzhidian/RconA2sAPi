@@ -30,5 +30,6 @@ jobs:
         with:
           upload_url: ${{ github.event.repository.releases_url }}/latest/releases
           asset_path: ./target/*.jar  # 请根据实际情况修改生成的 jar 文件路径
+          asset_content_type: application/java-archive
           asset_name: valveapi-1.1.0.RELEASE.jar  # 这里可以根据需要修改 artifact 的名称，这里假设以 git SHA 作为版本号
 
