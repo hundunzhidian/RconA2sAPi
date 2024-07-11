@@ -64,7 +64,11 @@ public class ByteTools {
         if(length==1)
         {
             if(tar<0)tar+=256;//消除单字节问题
+        }else if(length==2)
+        {
+            if(tar<0)tar+=65536;//消除单字节问题
         }
+
         return tar;
     }
     public static final boolean getBoolean(byte[] src, AtomicInteger index)
@@ -116,20 +120,6 @@ public class ByteTools {
         }
         return tmpBytes;
     }
-    public static final byte[] hexStrToBinaryStrbyte(String hexString) {
-        if(hexString==null) return null;
-        String[] tmp = hexString.split(" ");
-        byte[] tmpBytes = new byte[tmp.length];
-        int i = 0;
-        for (String b : tmp) {
-            if (b.equals("FF")) {
-                tmpBytes[i++] = -1;
-            } else {
-                tmpBytes[i++] = Integer.valueOf(b, 16).byteValue();
-            }
-        }
-        return tmpBytes;
-    }
     public static  final String intToByteString(int src)
     {
         char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5','6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -148,46 +138,7 @@ public class ByteTools {
             }
             return stringBuffer.toString();
     }
-    public static String getCRC(Byte[] bytes) {
-        int CRC = 0x0000ffff;
-        int POLYNOMIAL = 0x0000a001;
-
-        int i, j;
-        for (i = 0; i < bytes.length; i++) {
-            CRC ^= ((int) bytes[i] & 0x000000ff);
-            for (j = 0; j < 8; j++) {
-                if ((CRC & 0x00000001) != 0) {
-                    CRC >>= 1;
-                    CRC ^= POLYNOMIAL;
-                } else {
-                    CRC >>= 1;
-                }
-            }
-        }
-        return Integer.toHexString(CRC);
-    }
-    public static final void arraycopy(byte[] src,int srcPos,Byte[] dest,int destPos,int length)
-    {
-        for(int i=0;i<length;i++)
-        {
-            dest[destPos+i]=src[srcPos+i];
-        }
-    }
     public static final void arraycopy(byte[] src,int srcPos,byte[] dest,int destPos,int length)
-    {
-        for(int i=0;i<length;i++)
-        {
-            dest[destPos+i]=src[srcPos+i];
-        }
-    }
-    public static final void arraycopy(Byte[] src,int srcPos,byte[] dest,int destPos,int length)
-    {
-        for(int i=0;i<length;i++)
-        {
-            dest[destPos+i]=src[srcPos+i];
-        }
-    }
-    public static final void arraycopy(Byte[] src,int srcPos,Byte[] dest,int destPos,int length)
     {
         for(int i=0;i<length;i++)
         {

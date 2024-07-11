@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,7 +110,9 @@ public class UdpServer {
                     break;
                 }*/
             }
-            src.put("players", resBytes[j+3]+"/"+resBytes[j+4]);
+            int curr=resBytes[j+3];
+            int max=resBytes[j+4];
+            src.put("players", (curr<0?curr+256:curr)+"/"+(max<0?max+256:max));
         if(resBytes[j+8]==(byte) 0x01)  src.put("visibility","private");
     }
     /**
